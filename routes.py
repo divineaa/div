@@ -69,8 +69,13 @@ def viewarticle(article_id):
     #                                           filter(Comment.sentiment_analysis==0).count()
     total_positive = db.session.query(Comment).filter(Comment.location==art_loc).\
                                               filter(Comment.sentiment_analysis==1).count()
-    percent_positive = (total_positive/total_sentiments)*100
-    
+    if total_sentiments is not 0:
+        percent_positive = (total_positive/total_sentiments)*100
+        percent_negative = 100 - percent_positive
+    else:
+        percent_positive = 0
+        percent_negative = 0
+
     if form.validate_on_submit():
         sentimentScore = sentiment.getSentimentScore(form.description.data)
     
@@ -79,7 +84,7 @@ def viewarticle(article_id):
         db.session.commit()
         flash('Successfully Added')
         return redirect(url_for('viewarticle',article_id = article_id))
-    return render_template('viewarticle.html', form=form, article_id = article_id, article = article, comments = comments, user_id=user_id, percent_positive=int(percent_positive)) #this is where your pass values to be accessed by the front-end rendered template 
+    return render_template('viewarticle.html', form=form, article_id = article_id, article = article, comments = comments, user_id=user_id, percent_positive=int(percent_positive), percent_negative=int(percent_negative)) #this is where your pass values to be accessed by the front-end rendered template 
 
 #for the paper: sentiment analysis table
 @app.route('/commentstable/<location>/', methods=['GET','POST'])
@@ -125,6 +130,10 @@ def delete(article_id):
 #for registration
 @app.route('/register/', methods = ['POST','GET'])
 def register():
+    if session.get("user_id") == None:
+        session["user_id"] = 1
+    user_id =session.get("user_id")
+
     form = forms.RegistrationForm()
     if form.validate_on_submit():
         user = User(username =form.username.data, email = form.email.data, firstname = form.fname.data, lastname = form.lname.data, middlename = form.mname.data)
@@ -133,11 +142,15 @@ def register():
         db.session.commit()
         flash('Successfully registered!')
         return redirect(url_for('login'))
-    return render_template('registration.html', form=form)
+    return render_template('registration.html', form=form, user_id=user_id)
 
 #for login
 @app.route('/login/', methods = ['POST','GET'])
 def login():
+    if session.get("user_id") == None:
+        session["user_id"] = 1
+    user_id =session.get("user_id")
+
     form = forms.LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email = form.email.data).first()
@@ -148,7 +161,16 @@ def login():
             session["user_id"] = user.id
             return redirect(next or url_for('index'))
         flash('Invalid email address or Password.')  
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, user_id=user_id)
+
+#for logout
+@app.route('/logout/', methods = ['POST','GET'])
+def logout():
+    session["user_id"] = 1
+    user_id =session.get("user_id")
+    articles = Article.query.order_by(desc(Article.date)).all()
+    flash('Successfully logged out of the system.')
+    return render_template('index.html', articles = articles, user_id=user_id)
 
 # The login_manager provides the user_loader callback, which is responsible for fetching the current user id. Define the user_loader:
 @login_manager.user_loader
