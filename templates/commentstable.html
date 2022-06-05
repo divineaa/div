@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h3 class="mx-5">Sentiment Analysis</h3>
+<table class="table">
+  <tr>
+    <th>Sentiment</th>
+    <th>Analysis</th>
+  </tr>
+  {% for c in comments %}
+    <tr>
+      <td>{{c.description}}</td>
+      <td>{% if c.sentiment_analysis == 0 %}
+        Negative 
+        {% else %}
+        Positive 
+        {% endif %}
+        </td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

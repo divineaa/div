@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+    <!-- Bootstrap Font Icon CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--My own CSS-->
+    <style>
+        .textarea-noresize {
+        resize: none;
+        }
+
+        #count_message {
+        background-color: smoke;
+        margin-top: -20px;
+        margin-right: 5px;
+        }
+        .select2-container .select2-selection--single{
+            height:34px !important;
+        }
+        .select2-container--default .select2-selection--single{
+                border: 1px solid #ccc !important; 
+            border-radius: 0px !important; 
+        }
+
+    </style>
+    <title>Sentiment Analysis-based Web Application</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+          })
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-1">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Sentiment Analysis Web App</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Articles</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Post Article</a>
+              </li>
+            </ul>
+            <form class="d-flex">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#registerModal">Register</a>
+                    </li> 
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                        
+                    </li> 
+                </ul>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <!--end of nav-->
+ 
+    <!-- Modal Login-->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form class="px-4 py-3">
+                    <div class="form-group">
+                    <label for="txtUsername">Username</label>
+                    <input class="form-control" id="txtUsername" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                    <label for="txtPassword">Password</label>
+                    <input type="password" class="form-control" id="txtPassword" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-dark mt-1">Sign in</button>
+                </form>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#registerModal">New around here? Register</a>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+      <!-- Modal Register-->
+      <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="registerModalLabel">Register an Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                      <div class="col-md-4 mb-3">
+                        <label for="regFirstName">First name</label>
+                        <input type="text" class="form-control" id="regFirstName" placeholder="First name" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="regLastName">Last name</label>
+                        <input type="text" class="form-control" id="regLastName" placeholder="Last name" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="regMiddleName">Middle name</label>
+                        <input type="text" class="form-control" id="regMiddleName" placeholder="Middle name"  required>
+                      </div>
+                      </div>
+                      <div class="form-row">
+                      <div class="col-md-4 mb-3">
+                        <label for="regUsername">Username</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupPrepend2">@</span>
+                          </div>
+                          <input type="text" class="form-control" id="regUsername" placeholder="Username" aria-describedby="inputGroupPrepend2" required>
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="regPassword">Password</label>
+                        <input type="password" class="form-control" id="regPassword" placeholder="Password"  required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="regConfirmPassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="regConfirmPassword" placeholder="Password"  required>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col-md-6 mb-3">
+                        <label for="regEmail">Email</label>
+                        <input type="email" class="form-control" id="regEmail" placeholder="example@email.com" required>
+                      </div>
+                    </div>
+                    <button class="btn btn-dark" type="submit">Register</button>
+                  </form>
+                
+            </div>
+        </div>
+        </div>
+    </div>
+
+      <!--start of main content-->
+      <div class="container card">
+        <div class="row">
+            <h1 id="articleTitle">Title of Article</h1>
+        </div>
+        <div class="row">
+              <div class="mb-3">
+                <img id="articleImg" src="..." class="img-fluid" alt="...">
+              </div>
+              <div class="mb-3">
+                <p id="articleContent">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec laoreet accumsan dui ut pulvinar. Ut luctus vestibulum enim at eleifend. Nulla arcu nisi, viverra et est non, sodales rhoncus elit. Donec consequat sapien non mauris ultricies facilisis. Praesent feugiat ex sit amet eros ornare, quis tristique justo auctor. Aenean pulvinar gravida laoreet. Etiam vitae elementum velit, vel aliquam ex. Nunc ut ligula lacinia, fermentum arcu sit amet, semper magna. Maecenas vitae auctor turpis, id scelerisque neque. Ut lacinia nec risus vel dapibus. In sit amet felis at tellus efficitur posuere. Mauris sit amet dui ligula. Nullam tincidunt quam a augue laoreet mollis. Etiam venenatis lacus sit amet diam lacinia, nec interdum lacus pharetra. Praesent ornare, nisi in fermentum consequat, felis turpis pellentesque augue, cursus malesuada erat ex sit amet metus. Proin id laoreet magna, nec ornare enim.
+
+                    Mauris elementum tincidunt lacus et vehicula. Curabitur laoreet mi nunc, id volutpat odio placerat at. Praesent sed egestas ligula, vitae ullamcorper nulla. Etiam elementum fermentum imperdiet. Quisque tempus diam sit amet arcu gravida dapibus. Etiam sit amet lectus eget sem imperdiet placerat. Sed mattis tempor odio eu tempus. In suscipit dignissim purus, a egestas mi rutrum a. Ut eu ligula aliquam, tincidunt ligula at, aliquet nunc. Aliquam tincidunt accumsan bibendum.
+                    
+                    </p>
+
+                    <div class="card bg-light mb-3" style="width: 25rem;">
+                        <div class="card-header" ><h5 class="card-subtitle mb-2 text-muted">Sentiment Analysis </h5></div>
+                        <div class="card-body">
+                          <h6 id="articleLocation" class="card-subtitle mb-2 text-muted pb-1"> <i class="bi bi-geo-alt-fill"></i>Location Here</h6>
+  
+                          <h6 id="articlePositive" class="card-subtitle mb-2 text-muted pb-1" data-toggle="tooltip" data-placement="top" title="This is generated by the system through Sentiment Analysis of all articles related to the Destination"> <i class="bi bi-heart-fill"></i>Positive Sentiment Score</h6>
+                          
+                          <h6 id="articleNegative" class="card-subtitle mb-2 text-muted pb-1" data-toggle="tooltip" data-placement="top" title="This is generated by the system through Sentiment Analysis of all articles related to the Destination"><i class="bi bi-hand-thumbs-down-fill"></i>Negative Sentiment Score</h6>
+                        </div>
+                      </div>
+                      
+              </div>
+              <hr>
+              <div class="mb-3">
+                <div class="card" style="width: fluid ;">
+                    <div class="card-body">
+                      <h5 class="card-title">Your sentiment matters</h5>
+                      <div class="input-group">
+                        <span class="input-group-text">Comment Here</span>
+                        <textarea id="articleAddComment" class="form-control" aria-label="With textarea" placeholder="Enter your sentiment here (max of 120 characters)"  maxlength="120" data-toggle="tooltip" data-placement="top" title="Sentiments you post will be computed for the overall sentiment analysis score of the destination."></textarea>
+                      </div>
+                      <button type="button" class="btn btn-secondary float-end mt-1">Post Comment</button>
+                    </div>
+                  </div>       
+              </div>
+              <hr>
+              <h2>Comments</h2>
+              <figure>
+                <blockquote class="blockquote">
+                  <p id="articleComment">A well-known quote, contained in a blockquote element.</p>
+                </blockquote>
+                <figcaption id="commentAuthor" class="blockquote-footer">
+                  Anonymous <cite id="commentAnalysis" title="Source Title">[positive sentiment]</cite>
+                </figcaption>
+              </figure>
+        </div>
+       </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>

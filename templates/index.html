@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h3 class="mx-5">Article Posts</h3>
+  {% for article in articles %}
+    <div class="row justify-content-center">
+      <div class="card justify-content-center" style="width: 50rem;">
+        <div class="card-body">
+          <a id="articlelink" href="{{ url_for('viewarticle', article_id=article.id) }}"><h3>{{ article.title }}</h3></a>
+          
+          <p>Location: {{ article.location }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
+

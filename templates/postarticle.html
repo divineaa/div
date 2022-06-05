@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="container-fluid">
+  <form action="{{ url_for('postarticle') }}" method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <div class="card row p-3 mx-5">
+      <h3>Post Article</h3>
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Title of Article</label>
+        {{ form.title(class="form-control") }}
+      </div>
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Content of the Article</label>
+        {{ form.description(class="form-control", id="txtPostArticle") }}
+      </div>
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Location</label>
+        {{ form.location(class="form-contro dropdown-toggle") }}
+      </div>
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Upload Picture</label>
+        <!--<input class="form-control" type="file" id="formFile" name="uploaded-file" accept=".jpg">-->
+        {{ form.article_pic(class="form-control", id="formFile") }}
+
+      </div>
+      <div class="col">
+        {{ form.submit(class="btn btn-dark") }}
+        <button type="button" class="btn btn-secondary ">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

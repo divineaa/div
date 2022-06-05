@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="card m-auto" style="width: 50rem;">
+  <h5 class="card-header">Login</h5>
+  <div class="card-body">
+      <form class="px-4 py-3" action="" method="post">
+        {{ form.hidden_tag() }}
+          <div class="form-group">
+          <label for="txtEmail">Email</label>
+          {{ form.email(placeholder="Email", class="form-control") }}
+          {% for error in form.email.errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+          </div>
+          <div class="form-group">
+          <label for="txtPassword">Password</label>
+          {{ form.password(placeholder="Password", class="form-control") }}
+          {% for error in form.password.errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+          </div>
+          <p>{{ form.remember() }} {{ form.remember.label }}</p>
+          {{ form.submit(class="btn btn-dark mt-1") }}
+      </form>
+      
+  </div>
+</div>
+ 
+{% endblock %}

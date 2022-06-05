@@ -1,0 +1,66 @@
+
+{% extends "base.html" %}
+{% block main %}
+<div class="card m-auto" style="width: 50rem;">
+  <h5 class="card-header">Register an Account</h5>
+  <div class="card-body">
+    <form class="px-4 py-3" action="" method="post">
+      {{ form.hidden_tag() }}
+      <div class="form-group row">
+        <div class="col-md-4 mb-3">
+          <label for="regFirstName">First name</label>
+          {{ form.fname(placeholder="First name",class="form-control", id="regFirstName")}}
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="regLastName">Last name</label>
+          {{ form.lname(placeholder="Last name",class="form-control", id="regLastName")}}
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="regMiddleName">Middle name</label>
+          {{ form.mname(placeholder="Middle name",class="form-control", id="regMiddleName")}}
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-4 mb-3">
+          <label for="regUserName">Username</label>
+          {{ form.username(placeholder="Username",class="form-control", id="regUserName")}}
+          {% for error in form.username.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="regEmail">Email</label>
+          {{ form.email(placeholder="Email",class="form-control", id="regEmail")}}
+          {% for error in form.email.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}          
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-4 mb-3">
+          <label for="regPassword">Password</label>
+          {{ form.password1(placeholder="Password", class="form-control", id="regPassword")}}
+          {% for error in form.password1.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}          
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="regConfirmPassword">Confirm Password</label>
+          {{ form.password2(placeholder="Confirm password", class="form-control", id="regConfirmPassword")}}
+          {% for error in form.password2.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}          
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-4 mb-3">
+          {{ form.submit(class="btn btn-dark")}}
+        </div>
+        
+      </div>
+      <div class="dropdown-divider"></div>
+      <a class="text-muted" href="{{ url_for('login') }}" >Already have an account?</a>
+  </div>
+</div>
+ 
+{% endblock %}
