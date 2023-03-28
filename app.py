@@ -8,7 +8,11 @@ app = Flask(__name__)
 
 # app = Flask(__name__, template_folder='../templates', static_folder='../static')
 app.config['SECRET_KEY'] = os.urandom(32)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sentimentDB.db'
+#local connection:
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sentimentDB.db'
+#deployed connection:
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://mgketrzpcpmrcb:f140d4f52427c2834b51811d4069f79f18dac8d944ef927a8c25d17b0db88d5f@ec2-34-193-110-25.compute-1.amazonaws.com:5432/dejcu8ol4258oh'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
