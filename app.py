@@ -11,8 +11,8 @@ app.config['SECRET_KEY'] = os.urandom(32)
 #local connection:
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sentimentDB.db'
 #deployed connection:
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://mgketrzpcpmrcb:f140d4f52427c2834b51811d4069f79f18dac8d944ef927a8c25d17b0db88d5f@ec2-34-193-110-25.compute-1.amazonaws.com:5432/dejcu8ol4258oh'
-
+#postgres://mgketrzpcpmrcb:f140d4f52427c2834b51811d4069f79f18dac8d944ef927a8c25d17b0db88d5f@ec2-34-193-110-25.compute-1.amazonaws.com:5432/dejcu8ol4258oh'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://mvpxvsndetkxxk:d8d68cb5070fed476af8afaaa7f5ba6737ad65977ede461d21fe2b5e252c406b@ec2-44-206-204-65.compute-1.amazonaws.com:5432/d22hq5umf5fem6'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
