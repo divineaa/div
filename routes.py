@@ -31,7 +31,7 @@ def index():
         session["user_id"] = 1
     user_id =session.get("user_id")
     # session.pop("user_id", None) #upon logout
-    if keyword is not "":
+    if keyword != "":
         articles = Article.query.filter((Article.title.like(f'%{keyword}%')) | (Article.description.like(f'%{keyword}%')))
     else:
         articles = Article.query.order_by(desc(Article.date)).all()
