@@ -11,6 +11,9 @@ app.config['SECRET_KEY'] = os.urandom(32)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sentimentDB.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+#added to solve an error
+app.app_context().push()
 # for migrating db (synching model into db):
 migrate = Migrate(app, db)
 # terminal:

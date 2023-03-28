@@ -17,17 +17,41 @@ from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
 
-#INDEX/HOME/Article Posts
+#INDEX/HOME/Article List
 @app.route('/')
 @app.route('/index/', methods=['GET','POST'])
 def index():
+    form = forms.SearchArticleForm()
+    if request.method == 'POST' and 'submit' in request.form:
+        keyword = request.form['search']
+    else:
+        keyword=""
+
     if session.get("user_id") == None:
         session["user_id"] = 1
     user_id =session.get("user_id")
     # session.pop("user_id", None) #upon logout
-    articles = Article.query.order_by(desc(Article.date)).all()
-    return render_template('index.html', articles = articles, user_id=user_id)
+    if keyword is not "":
+        articles = Article.query.filter((Article.title.like(f'%{keyword}%')) | (Article.description.like(f'%{keyword}%')))
+    else:
+        articles = Article.query.order_by(desc(Article.date)).all()
+    return render_template('index.html', articles = articles, form=form, user_id=user_id, keyword=keyword)
+#return render_template('postarticle.html', form=form, user_id=user_id)
 
+#for searching thru the Article List
+#@app.route('/search', methods=['POST'])
+#def search():
+    #email = request.form['email']
+    #user = User.query.filter_by(email=email).first()
+    #if user:
+    #    return f'User {user.name} with email {user.email} found!'
+    #else:
+    #    return 'User not found.'
+
+    #get the form data for what is being searched:
+
+    #query: project all articles that matches the search:
+    
 #for posting an article
 @app.route('/postarticle', methods=['GET','POST'])
 def postarticle():
@@ -69,7 +93,7 @@ def viewarticle(article_id):
     #                                           filter(Comment.sentiment_analysis==0).count()
     total_positive = db.session.query(Comment).filter(Comment.location==art_loc).\
                                               filter(Comment.sentiment_analysis==1).count()
-    if total_sentiments is not 0:
+    if total_sentiments != 0:
         percent_positive = (total_positive/total_sentiments)*100
         percent_negative = 100 - percent_positive
     else:
@@ -154,7 +178,7 @@ def login():
     form = forms.LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email = form.email.data).first()
-        if user is not None and user.check_password(form.password.data):
+        if user != None and user.check_password(form.password.data):
             login_user(user)
             next = request.args.get("next")
             session["username"] = user.username
@@ -166,11 +190,14 @@ def login():
 #for logout
 @app.route('/logout/', methods = ['POST','GET'])
 def logout():
+    form = forms.SearchArticleForm()
+    keyword = "";
     session["user_id"] = 1
     user_id =session.get("user_id")
     articles = Article.query.order_by(desc(Article.date)).all()
     flash('Successfully logged out of the system.')
-    return render_template('index.html', articles = articles, user_id=user_id)
+    return render_template('index.html', articles = articles, form=form, user_id=user_id, keyword=keyword)
+    #NOTE:the render_template uses index.html so provide the same parameters provided in app.route(index)
 
 # The login_manager provides the user_loader callback, which is responsible for fetching the current user id. Define the user_loader:
 @login_manager.user_loader
